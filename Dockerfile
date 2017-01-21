@@ -15,13 +15,13 @@ RUN apt-get update  && \
     mkdir /var/log/sphinx && \
     mkdir /var/run/sphinx
 
-ADD sphinxy.conf /etc/sphinxsearch/
-ADD docker-entrypoint.sh /usr/local/bin/
+COPY sphinxy.conf /etc/sphinxsearch/
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
+ENTRYPOINT ["docker-entrypoint.sh"]
 
 EXPOSE 9306/tcp
 EXPOSE 9312/tcp
 VOLUME /etc/sphinxsearch
 VOLUME /var/log/sphinx
 VOLUME /var/lib/sphinx
-
-ENTRYPOINT ["docker-entrypoint.sh"]
