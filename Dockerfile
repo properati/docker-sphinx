@@ -23,5 +23,5 @@ RUN chmod a+x indexandsearch.sh && \
 EXPOSE 9306/tcp
 EXPOSE 9312/tcp
 VOLUME /etc/sphinxsearch
-VOLUME /var/log/sphin
+VOLUME /var/log/sphinx
 VOLUME /var/lib/sphinx
