@@ -1,4 +1,4 @@
-sphinxdocker
+docker-sphinx
 ============
 Sphinx-beta in an Ubuntu Docker container! This container will require some configuration (which is really no big deal), but if you just want to pass in database connection parameters when starting the container, go try [this one](https://github.com/stefobark/QuickSphinx). It's probably the easiest way to get started playing around with Sphinx.
 
@@ -11,7 +11,7 @@ sudo docker.io build -t sphinx .
 #####Pull it:######
 
 ```
-sudo docker.io pull stefobark/sphinxdocker
+sudo docker.io pull riftbit/docker-sphinx
 ```
 
 ####Some Introduction####
@@ -63,17 +63,17 @@ Sometimes it's good to shard your index, or you might want to do agent mirroring
 
 I started a bunch of Sphinx containers off of one image... many containers with unique names. To edit where searchd listens, and what will be indexed, for each container, I just edited ```sphinxy.conf``` before starting it:
 ```
-sudo docker.io run -p 9306:9306 -v /path/to/local/sphinx/conf:/etc/sphinxsearch/ --name sphinx1 -d stefobark/sphinx ./indexandsearch.sh
-sudo docker.io run -p 9307:9307 -v /path/to/local/sphinx/conf:/etc/sphinxsearch/ --name sphinx2 -d stefobark/sphinx ./indexandsearch.sh
-sudo docker.io run -p 9406:9406 -v /path/to/local/sphinx/conf:/etc/sphinxsearch/ --name sphinx3 -d stefobark/sphinx ./indexandsearch.sh
-sudo docker.io run -p 9407:9407 -v /path/to/local/sphinx/conf:/etc/sphinxsearch/ --name sphinx4 -d stefobark/sphinx ./indexandsearch.sh
+sudo docker.io run -p 9306:9306 -v /path/to/local/sphinx/conf:/etc/sphinxsearch/ --name sphinx1 -d riftbit/docker-sphinx ./indexandsearch.sh
+sudo docker.io run -p 9307:9307 -v /path/to/local/sphinx/conf:/etc/sphinxsearch/ --name sphinx2 -d riftbit/docker-sphinx ./indexandsearch.sh
+sudo docker.io run -p 9406:9406 -v /path/to/local/sphinx/conf:/etc/sphinxsearch/ --name sphinx3 -d riftbit/docker-sphinx ./indexandsearch.sh
+sudo docker.io run -p 9407:9407 -v /path/to/local/sphinx/conf:/etc/sphinxsearch/ --name sphinx4 -d riftbit/docker-sphinx ./indexandsearch.sh
 ```
 
 This created some 'shards' and 'mirrors'.. Containers that have ports starting with ``93`` are all mirrors of each other, they contain the first 100 docs from our datasource. Those listening on ports starting with ```94``` are also mirrors of each other, they hold the next 100 docs.
 
 From here, I started up 'lordsphinx':
 ```
-sudo docker.io run -p 9999:9999 -v /path/to/local/sphinx/conf:/etc/sphinxsearch/ --name lordsphinx -d stefobark/sphinx ./lordsearchd.sh
+sudo docker.io run -p 9999:9999 -v /path/to/local/sphinx/conf:/etc/sphinxsearch/ --name lordsphinx -d riftbit/docker-sphinx ./lordsearchd.sh
 ```
 
 It held the 'distributed' index type, which maps to the other instances of Sphinx. 
