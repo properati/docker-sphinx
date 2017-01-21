@@ -4,6 +4,8 @@
 
 FROM phusion/baseimage
 
+COPY docker-entrypoint.sh /usr/local/bin/
+
 RUN apt-get update  && \
     apt-get -y install software-properties-common && \
     apt-get update && \
@@ -13,11 +15,11 @@ RUN apt-get update  && \
     mkdir /var/lib/sphinx/ && \
     mkdir -p /var/lib/sphinx/data && \
     mkdir /var/log/sphinx && \
-    mkdir /var/run/sphinx
+    mkdir /var/run/sphinx && \ 
+    ln -s /usr/local/bin/docker-entrypoint.sh && \
+    chmod a+x /usr/local/bin/docker-entrypoint.sh
 
 COPY sphinxy.conf /etc/sphinxsearch/
-COPY docker-entrypoint.sh /usr/local/bin/
-RUN ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 EXPOSE 9306/tcp
