@@ -10,8 +10,7 @@ RUN apt-get update  && \
     add-apt-repository -y ppa:builds/sphinxsearch-beta && \
     apt-get update && \
     apt-get -y install sphinxsearch && \
-    mkdir /var/lib/sphinx && \
-    mkdir /var/lib/sphinx/data && \
+    mkdir -p /var/lib/sphinx/data && \
     mkdir /var/log/sphinx && \
     mkdir /var/run/sphinx
 
@@ -22,3 +21,7 @@ RUN chmod a+x indexandsearch.sh && \
     chmod a+x lordsearchd.sh
 
 EXPOSE 9306/tcp
+EXPOSE 9312/tcp
+VOLUME /etc/sphinxsearch
+VOLUME /var/log/sphin
+VOLUME /var/lib/sphinx
