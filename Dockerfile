@@ -15,10 +15,8 @@ RUN apt-get update  && \
     mkdir /var/log/sphinx && \
     mkdir /var/run/sphinx
 
-COPY docker-entrypoint.sh /usr/local/bin/
 COPY sphinxy.conf /etc/sphinxsearch/
-
-RUN chmod a+x searchd.sh
+COPY docker-entrypoint.sh /usr/local/bin/
 
 EXPOSE 9306/tcp
 EXPOSE 9312/tcp
